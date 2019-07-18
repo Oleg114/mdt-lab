@@ -14,7 +14,7 @@ pipeline {
         
         stage('PR- sonar scanner') {
             when {
-                 expression {return BRANCH_NAME != 'master';}
+                 expression {return BRANCH_NAME != 'master';}}
             steps {
                 sh 'echo "SONARQUBE in action......"'
                 withSonarQubeEnv(installationName: "sonarqube-default", credentialsId: "student13token") {
@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Quality gate') {
             when {
-                 expression {return BRANCH_NAME != 'master';}
+                 expression {return BRANCH_NAME != 'master';}}
             steps {
                 waitForQualityGate abortPipeline: true
             }
@@ -36,7 +36,7 @@ pipeline {
 
         stage('build') {
             when {
-                 expression {return BRANCH_NAME == 'master';}
+                 expression {return BRANCH_NAME == 'master';} }
                 steps {
                     
                     script {
@@ -52,7 +52,7 @@ pipeline {
         }        
         stage('archive'){
             when {
-                 expression {return BRANCH_NAME == 'master';}
+                 expression {return BRANCH_NAME == 'master';}}
                 steps {
                         script {
                             if (fileExists('../../version.txt')) {
