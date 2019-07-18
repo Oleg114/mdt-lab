@@ -13,25 +13,30 @@ pipeline {
         }
         
         stage('PR- sonar scanner') {
-            when { not { branch 'master' } }
+            when {
+                 expression {return BRANCH_NAME != 'master';}
             steps {
                 sh 'echo "SONARQUBE in action......"'
-                withSonarQubeEnv(installationName: "sonar", credentialsId: "student13token") {
-                    sh """
-                    ${scannerHome}/bin/sonar-scanner \
-                    -Dsonar.projectKey=srudent13 \
-                    -Dsonar.sources=. \
-                    -Dsonar.host.url=https://server2.jenkins-practice.tk:9443​ 
-                      
-                    """
+                withSonarQubeEnv(installationName: "sonarqube-default", credentialsId: "student13token") {
+                    def sonarHome = tool 'sonarqube-scanner-4.0'
+                    sh """${sonarHome}/bin/sonar-scanner -Dsonar.projectKey=student13-project -Dsonar.sources=www"""
+           
 
                 }
 
             }
         }
+        stage('Quality gate') {
+            when {
+                 expression {return BRANCH_NAME != 'master';}
+            steps {
+                waitForQualityGate abortPipeline: true
+            }
+        }
 
         stage('build') {
-            when { branch 'master'}
+            when {
+                 expression {return BRANCH_NAME == 'master';}
                 steps {
                     
                     script {
@@ -46,7 +51,8 @@ pipeline {
                 }
         }        
         stage('archive'){
-            when { branch 'master'}
+            when {
+                 expression {return BRANCH_NAME == 'master';}
                 steps {
                         script {
                             if (fileExists('../../version.txt')) {
@@ -65,8 +71,8 @@ pipeline {
                             tar --exclude=\"./css\"--exclude=\"./js\" -c -z -f "../archive.tgz" .
                                 
                             """
-                            nexusArtifactUploader artifacts: [[artifactId: 'archive', classifier: 'student13', file: 'archive.tgz', type: 'tgz']], credentialsId: 'student13-nexus', groupId: 'mdt', nexusUrl: 'server2.jenkins-practice.tk:8443', nexusVersion: 'nexus2', protocol: 'https', repository: 'student13-repo', version: "${LATEST}"
-
+                            nexusArtifactUploader artifacts: [[artifactId: 'archive', classifier: '', file: 'archive.tgz', type: 'tgz']], credentialsId: 'student13-jenkins-nexus', groupId: 'mdt', nexusUrl: 'server2.jenkins-practice.tk:8443', nexusVersion: 'nexus2', protocol: 'https', repository: 'student13-repo', version: "${LATEST}"
+                            
                             
                         }
                         
