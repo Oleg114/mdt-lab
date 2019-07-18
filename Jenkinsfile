@@ -80,7 +80,7 @@ pipeline {
                             tar --exclude=\"./css\"--exclude=\"./js\" -c -z -f "../archive.tgz" .
                                 
                             """
-                            nexusArtifactUploader artifacts: [[artifactId: 'archive', classifier: '', file: 'archive.tgz', type: 'tgz']], credentialsId: 'student13-jenkins-nexus', groupId: 'mdt', nexusUrl: 'server2.jenkins-practice.tk:8443', nexusVersion: 'nexus2', protocol: 'https', repository: 'student13-repo', version: "${LATEST}"
+                            nexusArtifactUploader artifacts: [[artifactId: 'archive', classifier: '', file: 'archive.tgz', type: 'tgz']], credentialsId: 'student13-jenkins-nexus', groupId: 'mdt', nexusUrl: 'server2.jenkins-practice.tk:8443', nexusVersion: 'nexus3', protocol: 'https', repository: 'student13-repo', version: "${LATEST}"
                             
                             
                         }
