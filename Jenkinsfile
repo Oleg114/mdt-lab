@@ -40,8 +40,8 @@ pipeline {
 
         stage('build') {
             tools {
-                nodejs 'Node12'
-             }
+                nodejs 'NodeLab'
+                }
             when {
                  expression {return BRANCH_NAME == 'master';} 
                  }
