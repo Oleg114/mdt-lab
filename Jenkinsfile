@@ -2,9 +2,7 @@ pipeline {
     agent {
         label 'student13'
     }
-    tools {
-        nodejs 'Node12'
-    }
+    
     stages {
         stage('checkout') {
             steps {
@@ -41,6 +39,9 @@ pipeline {
         }
 
         stage('build') {
+            tools {
+                nodejs 'Node12'
+             }
             when {
                  expression {return BRANCH_NAME == 'master';} 
                  }
