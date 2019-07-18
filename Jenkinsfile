@@ -2,6 +2,9 @@ pipeline {
     agent {
         label 'student13'
     }
+    tools {
+        nodejs 'Node12'
+    }
     stages {
         stage('checkout') {
             steps {
