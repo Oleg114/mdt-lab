@@ -19,9 +19,10 @@ pipeline {
             steps {
                 sh 'echo "SONARQUBE in action......"'
                 withSonarQubeEnv(installationName: "sonarqube-default", credentialsId: "student13token") {
+                    script {
                     def sonarHome = tool 'sonarqube-scanner-4.0'
                     sh """${sonarHome}/bin/sonar-scanner -Dsonar.projectKey=student13-project -Dsonar.sources=www"""
-           
+                    }
 
                 }
 
